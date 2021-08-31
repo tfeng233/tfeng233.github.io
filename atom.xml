@@ -3,11 +3,11 @@
   <title>ohayou</title>
   
   <subtitle>野记</subtitle>
-  <link href="https://github.com/Tfeng233/atom.xml" rel="self"/>
+  <link href="https://tfeng233.github.io/atom.xml" rel="self"/>
   
-  <link href="https://github.com/Tfeng233/"/>
+  <link href="https://tfeng233.github.io/"/>
   <updated>2021-08-31T12:39:16.725Z</updated>
-  <id>https://github.com/Tfeng233/</id>
+  <id>https://tfeng233.github.io/</id>
   
   <author>
     <name>echizen</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Hive安装</title>
-    <link href="https://github.com/Tfeng233/2021/08/31/hive-an-zhuang/"/>
-    <id>https://github.com/Tfeng233/2021/08/31/hive-an-zhuang/</id>
+    <link href="https://tfeng233.github.io/2021/08/31/hive-an-zhuang/"/>
+    <id>https://tfeng233.github.io/2021/08/31/hive-an-zhuang/</id>
     <published>2021-08-31T12:37:45.000Z</published>
     <updated>2021-08-31T12:39:16.725Z</updated>
     
@@ -35,14 +35,14 @@
     
     
     
-    <category term="大数据" scheme="https://github.com/Tfeng233/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    <category term="大数据" scheme="https://tfeng233.github.io/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
     
   </entry>
   
   <entry>
     <title>Hadoop完全分布式搭建</title>
-    <link href="https://github.com/Tfeng233/2021/08/31/hadoop-wan-quan-fen-bu-shi-da-jian/"/>
-    <id>https://github.com/Tfeng233/2021/08/31/hadoop-wan-quan-fen-bu-shi-da-jian/</id>
+    <link href="https://tfeng233.github.io/2021/08/31/hadoop-wan-quan-fen-bu-shi-da-jian/"/>
+    <id>https://tfeng233.github.io/2021/08/31/hadoop-wan-quan-fen-bu-shi-da-jian/</id>
     <published>2021-08-31T03:42:03.000Z</published>
     <updated>2021-08-31T08:01:09.058Z</updated>
     
@@ -58,7 +58,7 @@
     
     
     
-    <category term="大数据" scheme="https://github.com/Tfeng233/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    <category term="大数据" scheme="https://tfeng233.github.io/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
     
   </entry>
   
