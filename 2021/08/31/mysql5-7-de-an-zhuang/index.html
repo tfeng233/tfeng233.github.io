@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Hive安装, echizen 计算机 hadoop spark tensorflow">
+    <meta name="keywords" content="MySQL5.7的安装, echizen 计算机 hadoop spark tensorflow">
     <meta name="description" content="| 计算机科学与技术 | 大数据 | 机器学习 |">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Hive安装 | ohayou</title>
+    <title>MySQL5.7的安装 | ohayou</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -250,12 +250,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Hive安装</h1>
+                    <h1 class="description center-align post-title">MySQL5.7的安装</h1>
                 </div>
             </div>
         </div>
@@ -371,8 +371,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/">
-                                <span class="chip bg-color">大数据</span>
+                            <a href="/tags/MySQL/">
+                                <span class="chip bg-color">MySQL</span>
                             </a>
                         
                     </div>
@@ -411,132 +411,58 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="hive安装与配置"><a href="#hive安装与配置" class="headerlink" title="hive安装与配置"></a>hive安装与配置</h1><p>查看 IP ：<code>ip add</code>  ，记住ip后面有作用</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/%E7%AC%AC1%E9%A1%B5-2.PNG"></p>
-<h3 id="一、在hadoop上创建hive所需要的目录"><a href="#一、在hadoop上创建hive所需要的目录" class="headerlink" title="一、在hadoop上创建hive所需要的目录"></a>一、在hadoop上创建hive所需要的目录</h3><p>确保hadoop开启，可通过jps查看</p>
-<p><code>jps</code></p>
-<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/%E7%AC%AC1%E9%A1%B5-1.PNG"></p>
-<p>创建文件</p>
-<pre class="line-numbers language-linux" data-language="linux"><code class="language-linux">// 创建文件
-hadoop fs -mkdir -p /hive/data
-hadoop fs -mkdir -p /hive/logs
-hadoop fs -mkdir -p /hive/temp
-//赋予权限
-hadoop fs -chmod +w /hive/data
-hadoop fs -chmod +w /hive/logs
-hadoop fs -chmod +w /hive/temp
-//查看
-hadoop fs -ls /hive/<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+                <h1 id="rpm安装mysql5-7"><a href="#rpm安装mysql5-7" class="headerlink" title="rpm安装mysql5.7"></a>rpm安装mysql5.7</h1><p>准备：</p>
+<pre class="line-numbers language-linux" data-language="linux"><code class="language-linux">yum install wget -y
+yum install yum-utils -y<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/%E7%AC%AC2%E9%A1%B5-4.PNG"></p>
-<hr>
-<h3 id="二、准备MySQL"><a href="#二、准备MySQL" class="headerlink" title="二、准备MySQL"></a>二、准备MySQL</h3><p>hive需要与MySQL进行连接，保持数据库表的持久化</p>
-<p>1.创建hive数据库(metastore)与hive用户</p>
-<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">user</span> hive<span class="token variable">@'%'</span> identified <span class="token keyword">by</span> <span class="token string">'密码'</span><span class="token punctuation">;</span>
-<span class="token keyword">create</span> <span class="token keyword">database</span> metastore<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<!--已安装就无视-->
 
-<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/%E7%AC%AC2%E9%A1%B5-3.PNG"></p>
-<p>2.hive用户权限设置</p>
-<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">grant</span> <span class="token keyword">all</span> <span class="token keyword">on</span> <span class="token operator">*</span><span class="token punctuation">.</span><span class="token operator">*</span> <span class="token keyword">to</span> hive<span class="token variable">@'%'</span><span class="token punctuation">;</span>	<span class="token comment">//全部权限</span>
-flush <span class="token keyword">privileges</span><span class="token punctuation">;</span>	<span class="token comment">//刷新</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<p>3.配置hive与mysql的连接</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/%E7%AC%AC3%E9%A1%B5-8.PNG"></p>
-<pre class="line-numbers language-linux" data-language="linux"><code class="language-linux">cp mysql-connector-java-8.0.20/mysql-connector-java-8.0.20.jar $HIVE_HOME/lib/
-ll -h /usr/local/hive-2.3.7/lib/mysql-connector-java-8.0.20.jar<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/%E7%AC%AC3%E9%A1%B5-7.PNG"></p>
-<hr>
-<h3 id="三、安装hive"><a href="#三、安装hive" class="headerlink" title="三、安装hive"></a>三、安装hive</h3><p>进入存放hive安装包的目录（我的在/opt下）</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/%E7%AC%AC3%E9%A1%B5-6.PNG"></p>
-<p>将hive解压</p>
-<p><code>tar -zxvf apache-hive-2.3.7-bin.tar.gz -C /usr/local/</code> -C 是解压到指定位置（/usr/local/）</p>
-<p>进入你的解压位置：<code>cd /usr/loca/</code></p>
-<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/%E7%AC%AC3%E9%A1%B5-5.PNG"></p>
-<p>重命名文件：<code>mv apache-hive-2.3.7-bin/ hive-2.3.7</code></p>
-<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/%E7%AC%AC4%E9%A1%B5-13.PNG"></p>
-<p>进入hive-2.3.7：<code>cd hive-2.3.7</code>并使用<code>pwd</code>命令获取当前路径</p>
-<p>将hive写进环境变量<code>/etc/profile</code></p>
-<p><code>vim /etc/profile</code></p>
-<pre class="line-numbers language-linux" data-language="linux"><code class="language-linux"># hive
-export HIVE_HOME=/usr/local/hive-2.3.7
-export PATH=$PATH:$HIVE_HOME/sbin:$HIVE_HOME/bin::$PATH<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/%E7%AC%AC4%E9%A1%B5-11.PNG"></p>
-<p>刷新环境变量：<code>source  /etc/profile</code></p>
-<p>执行<code>hive --version</code> 有版本显示则表示安装成功</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/%E7%AC%AC4%E9%A1%B5-10.PNG"></p>
-<p>在$HIVE_HOME目录下创建doc、log文件夹</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/%E7%AC%AC4%E9%A1%B5-9.PNG"></p>
-<hr>
-<h3 id="四、配置文件"><a href="#四、配置文件" class="headerlink" title="四、配置文件"></a>四、配置文件</h3><p>进入hive conf目录：<code>cd $HIVE_HOME/conf</code></p>
-<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/%E7%AC%AC5%E9%A1%B5-17.PNG"></p>
-<p>打印hadoop文件位置<code>echo $HADOOP_HOME</code> </p>
-<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/%E7%AC%AC5%E9%A1%B5-16.PNG"></p>
-<p><strong>配置hive-env.sh</strong></p>
-<p>以模板复制一份<code>cp hive-env.sh.template hive-env.sh</code></p>
-<p><code>vim hive-env.sh</code></p>
-<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/%E7%AC%AC5%E9%A1%B5-15.PNG"></p>
-<pre class="line-numbers language-linux" data-language="linux"><code class="language-linux">HADOOP_HOME=/usr/local/hadoop-2.7.7 //hadoop安装目录<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/%E7%AC%AC5%E9%A1%B5-14.PNG"></p>
-<p><strong>配置hive-site.xml</strong></p>
-<p><code>vim hive-site.xml</code></p>
-<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token prolog">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;</span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>configuration</span><span class="token punctuation">&gt;</span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">&gt;</span></span>
-                <span class="token comment">&lt;!--该目录由Hive用来存储查询的不同map / reduce阶段的计划以及存储这些阶段的中间输出 --&gt;</span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">&gt;</span></span>hive.exec.scratchdir<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">&gt;</span></span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">&gt;</span></span>/usr/local/hive-2.3.7/doc/tmp<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">&gt;</span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">&gt;</span></span>
-
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">&gt;</span></span>
-                <span class="token comment">&lt;!--本地数据仓库目录--&gt;</span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">&gt;</span></span>hive.metastore.warehouse.dir<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">&gt;</span></span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">&gt;</span></span>/usr/local/hive-2.3.7/doc/warehouse<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">&gt;</span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">&gt;</span></span>
-
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">&gt;</span></span>
-                <span class="token comment">&lt;!--hive运行日志位置--&gt;</span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">&gt;</span></span>hive.querylog.location<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">&gt;</span></span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">&gt;</span></span>/usr/local/hive-2.3.7/doc/logs<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">&gt;</span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">&gt;</span></span>
-
-                <span class="token comment">&lt;!-- 配置 MySQL 数据库连接信息 --&gt;</span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">&gt;</span></span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">&gt;</span></span>javax.jdo.option.ConnectionURL<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">&gt;</span></span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">&gt;</span></span>jdbc:mysql://ip地址:3306/metastore<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">&gt;</span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">&gt;</span></span>
-
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">&gt;</span></span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">&gt;</span></span>javax.jdo.option.ConnectionDriverName<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">&gt;</span></span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">&gt;</span></span>com.mysql.cj.jdbc.Driver<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">&gt;</span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">&gt;</span></span>
-
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">&gt;</span></span>
-                <span class="token comment">&lt;!--mysql中HIVE用户--&gt;</span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">&gt;</span></span>javax.jdo.option.ConnectionUserName<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">&gt;</span></span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">&gt;</span></span>hive<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">&gt;</span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">&gt;</span></span>
-
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">&gt;</span></span>
-                <span class="token comment">&lt;!--mysql中HIVE密码--&gt;</span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">&gt;</span></span>javax.jdo.option.ConnectionPassword<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">&gt;</span></span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">&gt;</span></span>密码<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">&gt;</span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">&gt;</span></span>
-
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>configuration</span><span class="token punctuation">&gt;</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="1-centos7自带有mariadb，需要卸载"><a href="#1-centos7自带有mariadb，需要卸载" class="headerlink" title="1.centos7自带有mariadb，需要卸载"></a>1.centos7自带有mariadb，需要卸载</h3><p>执行<code>rpm -qa|grep mariadb</code>查询是否有mariadb的安装包</p>
+<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC1%E9%A1%B5-2.PNG"></p>
+<p>如有提示，执行<code>rpm -e --nodeps mariadb-libs</code>删除它，没提示可以无视</p>
+<h3 id="2-下载MySQL安装包"><a href="#2-下载MySQL安装包" class="headerlink" title="2.下载MySQL安装包"></a>2.下载MySQL安装包</h3><p>1.前往官方网站复制yum源链接<a target="_blank" rel="noopener" href="https://dev.mysql.com/downloads/repo/yum/">MySQL</a></p>
+<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC1%E9%A1%B5-1.PNG"></p>
+<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC2%E9%A1%B5-5.PNG"></p>
+<p>2.执行<code>wget rpm -ivh mysql80-community-release-el7-3.noarch.rpm</code>（即你复制的下载链接）进行下载</p>
+<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC2%E9%A1%B5-4.PNG"></p>
+<h3 id="2-进行yum安装"><a href="#2-进行yum安装" class="headerlink" title="2.进行yum安装"></a>2.进行yum安装</h3><p>执行<code>rpm -ivh mysql80-community-release-el7-3.noarch.rpm</code>命令</p>
+<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC2%E9%A1%B5-3.PNG"></p>
+<p>接下来可以通过<code>yum repolist all | grep mysql</code>查看yum源中的mysql安装包</p>
+<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC3%E9%A1%B5-9.PNG"></p>
+<h3 id="3-进行MySQL安装"><a href="#3-进行MySQL安装" class="headerlink" title="3.进行MySQL安装"></a>3.进行MySQL安装</h3><p>可以看到yum源中默认启用的安装包版本为MySQL8.0，如果需要切换为5.7，需要运行以下命令：</p>
+<p><code>yum-config-manager --disable mysql80-community</code></p>
+<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC3%E9%A1%B5-8.PNG"></p>
+<p><code>yum-config-manager --enable mysql57-community</code></p>
+<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC3%E9%A1%B5-7.PNG"></p>
+<p>进行安装：</p>
+<p><code>yum install mysql-community-server-y</code></p>
+<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC3%E9%A1%B5-6.PNG"></p>
+<h3 id="4-启动MySQL服务"><a href="#4-启动MySQL服务" class="headerlink" title="4.启动MySQL服务"></a>4.启动MySQL服务</h3><p>启动mysql服务 <code>systemctl start mysqld.service</code></p>
+<p>查看mysql服务运行状态 <code>systemctl status mysqld.service</code></p>
+<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC4%E9%A1%B5-12.PNG"></p>
+<p>MySQL服务器初始化（从MySQL 5.7开始）：在服务器初始启动时，如果服务器的数据目录为空，则会发生以下情况：</p>
+<ul>
+<li>服务器已初始化。</li>
+<li>在数据目录中生成SSL证书和密钥文件。</li>
+<li>该<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/validate-password.html">validate_password插件</a>安装并启用。</li>
+<li>默认将<code>'root'@'localhost'</code> 创建一个超级用户帐户。设置超级用户的密码并将其存储在错误日志文件中。要显示它，请使用以下命令：</li>
+</ul>
+<p>查看MySQL root用户默认密码<code>grep 'temporary password' /var/log/mysqld.log</code></p>
+<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC4%E9%A1%B5-11.PNG"></p>
+<p>通过使用生成的临时密码登录并为超级用户帐户设置自定义密码，尽快更改root密码：</p>
+<p><code>mysql -u root -p</code></p>
+<p>Enter pasword：查询的默认密码（输入密码不会有提示）</p>
+<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC4%E9%A1%B5-10.PNG"></p>
+<p>注意<br>MySQL的 <a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/validate-password.html">validate_password</a> 插件默认安装。</p>
+<p>这将要求密码包含至少一个大写字母，一个小写字母，一个数字和一个特殊字符，并且密码总长度至少为8个字符。</p>
+<p>如果您需要修改简单密码，可以依次执行以下操作步骤:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">set</span> <span class="token keyword">global</span> validate_password_policy<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token keyword">set</span> <span class="token keyword">global</span> validate_password_length<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token keyword">set</span> <span class="token keyword">global</span> validate_password_mixed_case_count<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token comment">-- 然后进行密码更改</span>
+<span class="token keyword">ALTER</span> <span class="token keyword">USER</span> <span class="token string">'root'</span><span class="token variable">@'localhost'</span> IDENTIFIED <span class="token keyword">BY</span> <span class="token string">'你的密码'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
-
-<p><strong>hive元数据库初始化</strong></p>
-<p>回到hive的bin目录下</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/%E7%AC%AC6%E9%A1%B5-19.PNG"></p>
-<pre class="line-numbers language-linux" data-language="linux"><code class="language-linux">schematool -dbType mysql -initSchema //初始化命令<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/%E7%AC%AC6%E9%A1%B5-18.PNG"></p>
-<p>测验</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/%E7%AC%AC7%E9%A1%B5-20.PNG"></p>
 
                 
             </div>
@@ -563,7 +489,7 @@ export PATH=$PATH:$HIVE_HOME/sbin:$HIVE_HOME/bin::$PATH<span aria-hidden="true" 
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://Tfeng233.github.io/2021/08/31/hive-an-zhuang/">https://Tfeng233.github.io/2021/08/31/hive-an-zhuang/</a>
+                    <a href="https://Tfeng233.github.io/2021/08/31/mysql5-7-de-an-zhuang/">https://Tfeng233.github.io/2021/08/31/mysql5-7-de-an-zhuang/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -601,8 +527,8 @@ export PATH=$PATH:$HIVE_HOME/sbin:$HIVE_HOME/bin::$PATH<span aria-hidden="true" 
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/">
-                                    <span class="chip bg-color">大数据</span>
+                                <a href="/tags/MySQL/">
+                                    <span class="chip bg-color">MySQL</span>
                                 </a>
                             
                         </div>
@@ -774,9 +700,10 @@ export PATH=$PATH:$HIVE_HOME/sbin:$HIVE_HOME/bin::$PATH<span aria-hidden="true" 
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/08/31/mysql5-7-de-an-zhuang/">
                     <div class="card-image">
@@ -794,9 +721,9 @@ export PATH=$PATH:$HIVE_HOME/sbin:$HIVE_HOME/bin::$PATH<span aria-hidden="true" 
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-08-31
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-31
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -805,6 +732,7 @@ export PATH=$PATH:$HIVE_HOME/sbin:$HIVE_HOME/bin::$PATH<span aria-hidden="true" 
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -823,13 +751,13 @@ export PATH=$PATH:$HIVE_HOME/sbin:$HIVE_HOME/bin::$PATH<span aria-hidden="true" 
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/08/31/hadoop-wan-quan-fen-bu-shi-da-jian/">
+                <a href="/2021/08/31/hive-an-zhuang/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Hadoop完全分布式搭建">
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Hive安装">
                         
-                        <span class="card-title">Hadoop完全分布式搭建</span>
+                        <span class="card-title">Hive安装</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
