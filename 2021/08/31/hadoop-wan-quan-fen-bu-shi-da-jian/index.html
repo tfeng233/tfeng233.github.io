@@ -1,0 +1,1520 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Hadoop完全分布式搭建, echizen 计算机 hadoop spark tensorflow">
+    <meta name="description" content="| 计算机科学与技术 | 大数据 | 机器学习 |">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Hadoop完全分布式搭建 | ohayou</title>
+    <link rel="icon" type="image/png" href="/Tfeng233/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/Tfeng233/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/Tfeng233/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/Tfeng233/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/Tfeng233/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/Tfeng233/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/Tfeng233/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/Tfeng233/css/my.css">
+
+    <script src="/Tfeng233/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/Tfeng233/atom.xml" title="ohayou" type="application/atom+xml">
+</head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/Tfeng233/" class="waves-effect waves-light">
+                    
+                    <img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/2333.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">ohayou</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/Tfeng233/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/Tfeng233/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/Tfeng233/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/Tfeng233/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/Tfeng233/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/Tfeng233/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/Tfeng233/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/2333.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">ohayou</div>
+        <div class="logo-desc">
+            
+            | 计算机科学与技术 | 大数据 | 机器学习 |
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/Tfeng233/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/Tfeng233/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/Tfeng233/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/Tfeng233/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/Tfeng233/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/Tfeng233/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/Tfeng233/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/Tfeng233/medias/featureimages/14.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Hadoop完全分布式搭建</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/Tfeng233/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/Tfeng233/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/">
+                                <span class="chip bg-color">大数据</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-08-31
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/Tfeng233/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="Hadoop的三种模式"><a href="#Hadoop的三种模式" class="headerlink" title="Hadoop的三种模式"></a>Hadoop的三种模式</h2><p>三种模式：本地 、伪分布式、全分布式、高可用HA（重点）</p>
+<blockquote>
+<p>思考：伪分布式模式存在的问题？</p>
+<p>​            模拟集群  实质上在一个节点上面的操作</p>
+<p>全分布式：NN DN  SNN  用多台节点（服务器）来运行的，并没有用高可用HA</p>
+<p>高可用：HA</p>
+</blockquote>
+<h1 id="任务描述"><a href="#任务描述" class="headerlink" title="任务描述"></a>任务描述</h1><p>大数据集群Hadoop全分布式搭建</p>
+<h1 id="任务实现"><a href="#任务实现" class="headerlink" title="任务实现"></a>任务实现</h1><h2 id="全分布式大数据集群规划"><a href="#全分布式大数据集群规划" class="headerlink" title="全分布式大数据集群规划"></a>全分布式大数据集群规划</h2><h3 id="集群拓扑"><a href="#集群拓扑" class="headerlink" title="集群拓扑"></a>集群拓扑</h3><p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589953548482.png" alt="1589953548482"></p>
+<h3 id="主机-角色-规划"><a href="#主机-角色-规划" class="headerlink" title="主机(角色)规划"></a>主机(角色)规划</h3><table>
+<thead>
+<tr>
+<th><strong>节点名称</strong></th>
+<th>IP</th>
+<th><strong>namenode</strong></th>
+<th><strong>datanode</strong></th>
+<th><strong>SecondaryNameNode</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>node01</td>
+<td>192.168.32.2</td>
+<td>*</td>
+<td>*</td>
+<td></td>
+</tr>
+<tr>
+<td>node02</td>
+<td>192.168.32.3</td>
+<td></td>
+<td>*</td>
+<td>*</td>
+</tr>
+<tr>
+<td>node03</td>
+<td>192.168.32.4</td>
+<td></td>
+<td>*</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>准备三个虚拟机,三个虚拟机分别设置好对应的网络ip配置</p>
+<h3 id="软件规划"><a href="#软件规划" class="headerlink" title="软件规划"></a>软件规划</h3><table>
+<thead>
+<tr>
+<th>软件</th>
+<th>版本</th>
+<th>安装节点</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>VMWARE</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>CentOS</td>
+<td>7</td>
+<td>*</td>
+<td>Linux操作系统</td>
+</tr>
+<tr>
+<td>JDK</td>
+<td>1.8</td>
+<td>*</td>
+<td>Hadoop基于Java，所以必须提前安装JDK</td>
+</tr>
+<tr>
+<td>Hadoop</td>
+<td>2.7.7</td>
+<td>*</td>
+<td>运行处理大数据的软件平台</td>
+</tr>
+</tbody></table>
+<h3 id="软件目录规划"><a href="#软件目录规划" class="headerlink" title="软件目录规划"></a>软件目录规划</h3><table>
+<thead>
+<tr>
+<th>目录名称</th>
+<th>绝对路径</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>所有软件包存放目录</td>
+<td>/usr/tools</td>
+</tr>
+<tr>
+<td>大数据软件安装目录</td>
+<td>/usr/local/*</td>
+</tr>
+</tbody></table>
+<h2 id="虚拟机安装"><a href="#虚拟机安装" class="headerlink" title="虚拟机安装"></a>虚拟机安装</h2><p><img src="_posts/https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955109191.png" alt="1589955109191"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955120259.png" alt="1589955120259"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955167199.png" alt="1589955167199"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955183882.png" alt="1589955183882"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955200679.png" alt="1589955200679"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955210138.png" alt="1589955210138"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955216696.png" alt="1589955216696"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955222045.png" alt="1589955222045"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955232869.png" alt="1589955232869"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955239722.png" alt="1589955239722"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955252135.png" alt="1589955252135"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955258196.png" alt="1589955258196"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955262315.png" alt="1589955262315"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955266780.png" alt="1589955266780"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955273074.png" alt="1589955273074">Linux操作系统安装</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955299950.png" alt="1589955299950"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955308231.png" alt="1589955308231"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955316201.png" alt="1589955316201"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955327495.png" alt="1589955327495"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955332876.png" alt="1589955332876"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955340503.png" alt="1589955340503"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955383743.png" alt="1589955383743"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955398635.png" alt="1589955398635"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955404694.png" alt="1589955404694"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955412625.png" alt="1589955412625"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955421739.png" alt="1589955421739"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955430856.png" alt="1589955430856"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955436104.png" alt="1589955436104"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589955441918.png" alt="1589955441918"></p>
+<h2 id="虚拟机拍照"><a href="#虚拟机拍照" class="headerlink" title="虚拟机拍照"></a>虚拟机拍照</h2><ol>
+<li>关闭虚拟机</li>
+<li>拍照</li>
+</ol>
+<h2 id="虚拟机网络适配器设置"><a href="#虚拟机网络适配器设置" class="headerlink" title="虚拟机网络适配器设置"></a>虚拟机网络适配器设置</h2><h3 id="选择联网模式"><a href="#选择联网模式" class="headerlink" title="选择联网模式"></a>选择联网模式</h3><ol>
+<li><p>桥接模式</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589957562935.png" alt="1589957562935"></p>
+</li>
+<li><p>Nat模式</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589957906167.png" alt="1589957906167"></p>
+</li>
+<li><p>仅主机模式</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589957938149.png" alt="1589957938149"></p>
+</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589958403997.png" alt="1589958403997"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589958441728.png" alt="1589958441728"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589958503178.png" alt="1589958503178"></p>
+<h3 id="编辑虚拟网络"><a href="#编辑虚拟网络" class="headerlink" title="编辑虚拟网络"></a>编辑虚拟网络</h3><p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589958814217.png" alt="1589958814217"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589958802571.png" alt="1589958802571">配置IP地址</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589959839006.png" alt="1589959839006"></p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">#修改
+BOOTPROTO=static #这里讲dhcp换成static
+ONBOOT=yes #将no换成yes
+#新增
+IPADDR=192.168.52.101 #静态IP
+GATEWAY=192.168.52.2 #默认网关
+NETMASK=255.255.255.0 #子网掩码
+DNS1=114.114.114.114 #DNS<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589962380018.png" alt="1589962380018"></p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">#重启网卡
+
+service network restart
+
+ifconfig 或 ip addr<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589960037089.png" alt="1589960037089">MobaXterm连接</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589961334828.png" alt="1589961334828"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1589962468160.png" alt="1589962468160"></p>
+<h3 id="Linux安全机制"><a href="#Linux安全机制" class="headerlink" title="Linux安全机制"></a>Linux安全机制</h3><ol>
+<li><p>关闭防火墙</p>
+</li>
+<li><p>关闭防火墙开机启动</p>
+</li>
+<li><p>修改SELinux配置文件</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">[root@master ~]# systemctl status firewalld.service
+[root@master ~]# systemctl stop firewalld.service
+[root@master ~]# systemctl disable firewalld.service
+[root@master ~]# vi /etc/selinux/config<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/image-20210305084355647.png" alt="image-20210305084355647"></p>
+<h2 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h2><ol>
+<li><p>创建一个存放软件的目录 </p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">[root@localhost ~]# mkdir /usr/tools
+[root@localhost ~]# cd /usr/tools/
+[root@localhost tools]# pwd<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/image-20210305084553096.png" alt="image-20210305084553096"></p>
+</li>
+<li><p>上传jdk压缩包到/usr/tools目录下</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/image-20210305084748788.png" alt="image-20210305084748788"></p>
+</li>
+<li><p>解压</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">[root@localhost tools]# tar -zxvf jdk-8u221-linux-x64.tar.gz  -C /usr/local/
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>设置环境变量</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1590042543484.png" alt="1590042543484"></p>
+<p>将如下配置添加至文件/etc/profile中，然后保存退出。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">#java
+
+export JAVA_HOME=/usr/local/jdk1.8.0_221
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib
+export PATH=$JAVA_HOME/bin:$PATH<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/image-20210305141301802.png" alt="image-20210305141301802"></p>
+</li>
+<li><p>让配置文件生效</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">[root@node01 java]# source /etc/profile<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>验证</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">[root@node01 java]# java -version<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/image-20210305085208531.png" alt="image-20210305085208531"></p>
+<h2 id="再次拍照"><a href="#再次拍照" class="headerlink" title="再次拍照"></a>再次拍照</h2><ol>
+<li>关机</li>
+<li>拍照</li>
+</ol>
+<h2 id="集群复制"><a href="#集群复制" class="headerlink" title="集群复制"></a>集群复制</h2><h3 id="克隆节点"><a href="#克隆节点" class="headerlink" title="克隆节点"></a>克隆节点</h3><p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1590020909682.png" alt="1590020909682"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1590020936092.png" alt="1590020936092"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1590021035956.png" alt="1590021035956"></p>
+<p>再重复此操作创建出Node02 node03</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1590021155731.png" alt="1590021155731"></p>
+<h3 id="配置IP"><a href="#配置IP" class="headerlink" title="配置IP"></a>配置IP</h3><p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1590021695079.png" alt="1590021695079"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1590021665832.png" alt="1590021665832"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1590021802827.png" alt="1590021802827"></p>
+<p>其它2台对应修改</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1590021970210.png" alt="1590021970210"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1590021983803.png" alt="1590021983803"></p>
+<h3 id="修改主机名"><a href="#修改主机名" class="headerlink" title="修改主机名"></a>修改主机名</h3><p>MobaXterm连上4台机器,修改主机名</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1590022368029.png" alt="1590022368029"></p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">hostnamectl set-hostname node01<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">hostnamectl set-hostname node02<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">hostnamectl set-hostname node03<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1590022542697.png" alt="1590022542697"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1590022588900.png" alt="1590022588900"></p>
+<h3 id="关机创建拍照"><a href="#关机创建拍照" class="headerlink" title="关机创建拍照"></a>关机创建拍照</h3><p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1590022896823.png" alt="1590022896823"></p>
+<h2 id="Hadoop安装配置"><a href="#Hadoop安装配置" class="headerlink" title="Hadoop安装配置"></a>Hadoop安装配置</h2><h3 id="虚拟机IP映射"><a href="#虚拟机IP映射" class="headerlink" title="虚拟机IP映射"></a>虚拟机IP映射</h3><p>在node01上编辑 /etc/hosts，加入如下内容</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">192.168.52.101 node01192.168.52.102 node02192.168.52.103 node03<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="SSH免密登录"><a href="#SSH免密登录" class="headerlink" title="SSH免密登录"></a>SSH免密登录</h3><h4 id="所有机器依次执行"><a href="#所有机器依次执行" class="headerlink" title="所有机器依次执行"></a>所有机器依次执行</h4><p>执行过程中需要输入密码，就输入对应密码即可。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">ssh 127.0.0.1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/wps9.jpg" alt="img"></p>
+<h4 id="在Node01创建秘钥"><a href="#在Node01创建秘钥" class="headerlink" title="在Node01创建秘钥"></a>在Node01创建秘钥</h4><p>下面的命令一行一行的运行，运行过程中如果要输入密码，输入即可。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsacat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keyschmod 0600 ~/.ssh/authorized_keys<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/wps10.jpg" alt="img"></p>
+<h4 id="共享公钥"><a href="#共享公钥" class="headerlink" title="共享公钥"></a>共享公钥</h4><p>在node01将公钥推给另外节点，执行：</p>
+<p>可能要输入密码，输入即可</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">[root@node01 ~]# ssh-copy-id -i node01[root@node01 ~]# ssh-copy-id -i node02[root@node01 ~]# ssh-copy-id -i node03<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h4 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h4><p>连的过程中有可能第一次需要输入密码，第二次再去ssh还是需要输入密码就有问题，</p>
+<p>注意事项：一旦ssh连进去了之后一定要退出来，exit</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">ssh node02exit<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">ssh node03exit<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">ssh node04exit<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="共享hosts文件"><a href="#共享hosts文件" class="headerlink" title="共享hosts文件"></a>共享hosts文件</h3><p>把hosts文件分发给node02 node03 </p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">[root@node01 ~]# scp /etc/hosts root@node02:/etc/[root@node01 ~]# scp /etc/hosts root@node03:/etc/<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="node01（主）安装Hadoop"><a href="#node01（主）安装Hadoop" class="headerlink" title="node01（主）安装Hadoop"></a>node01（主）安装Hadoop</h3><ol>
+<li><p>上传</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/1590044622284.png" alt="1590044622284"></p>
+</li>
+<li><p>解压</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">[root@node01 ~]# cd /usr/tools/[root@node01 local]# tar -zxvf hadoop-2.7.7.tar.gz -C /usr/local[root@node01 hadoop-2.7.7]# cd /usr/local/hadoop-2.7.7/share/[root@node01 share]# lsdoc  hadoop[root@node01 share]# rm -rf doc<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>设置环境变量</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">vi /etc/profile<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>添加如下内容</p>
+<pre class="line-numbers language-none"><code class="language-none"># Hadoopexport HADOOP_HOME=/usr/local/hadoop-2.7.7export PATH=$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$PATH<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>环境变量生效</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">[root@node01 ~]# source /etc/profile<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>测试验证</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">[root@node01 ~]# hadoop<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>分发环境变量</p>
+</li>
+</ol>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">[root@node01 soft]# scp /etc/profile root@node02:/etc/[root@node01 soft]# scp /etc/profile root@node03:/etc/注意：记得到所有节点上执行source命令<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="配置Hadoop全分布式"><a href="#配置Hadoop全分布式" class="headerlink" title="配置Hadoop全分布式"></a>配置Hadoop全分布式</h3><h4 id="修改hadoop-env-sh"><a href="#修改hadoop-env-sh" class="headerlink" title="修改hadoop-env.sh"></a>修改hadoop-env.sh</h4><p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/image-20210305161336177.png" alt="image-20210305161336177"></p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml">export JAVA_HOME=/usr/local/jdk1.8.0_221<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/image-20210305160713081.png" alt="image-20210305160713081"></p>
+<h4 id="修改core-site-xml"><a href="#修改core-site-xml" class="headerlink" title="修改core-site.xml"></a>修改core-site.xml</h4><p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/image-20210305161357980.png" alt="image-20210305161357980"></p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>configuration</span><span class="token punctuation">&gt;</span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">&gt;</span></span>        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">&gt;</span></span>fs.defaultFS<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">&gt;</span></span>        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">&gt;</span></span>hdfs://node01:9000<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">&gt;</span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">&gt;</span></span>        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">&gt;</span></span>        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">&gt;</span></span>hadoop.tmp.dir<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">&gt;</span></span>        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">&gt;</span></span>/var/root/hadoop/full<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">&gt;</span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>configuration</span><span class="token punctuation">&gt;</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>说明：</p>
+<ul>
+<li><p>fs.defaultFS 文件系统对外提供的URI地址以供数据交互。</p>
+</li>
+<li><p>hadoop.tmp.dir是hadoop文件系统依赖的基础配置，很多路径都依赖它。如果hdfs-site.xml中不配置namenode 和datanode的存放位置，默认就放在这个路径下。</p>
+</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/image-20210305161052241.png" alt="image-20210305161052241"></p>
+<h4 id="修改hdfs-site-xml"><a href="#修改hdfs-site-xml" class="headerlink" title="修改hdfs-site.xml"></a>修改hdfs-site.xml</h4><p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/image-20210305161422709.png" alt="image-20210305161422709"></p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>configuration</span><span class="token punctuation">&gt;</span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">&gt;</span></span>        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">&gt;</span></span>dfs.replication<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">&gt;</span></span>        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">&gt;</span></span>2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">&gt;</span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">&gt;</span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">&gt;</span></span>        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">&gt;</span></span>dfs.namenode.secondary.http-address<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">&gt;</span></span>        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">&gt;</span></span>node02:50090<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">&gt;</span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">&gt;</span></span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>configuration</span><span class="token punctuation">&gt;</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>说明：</p>
+<ul>
+<li>dfs.replication  副本数量</li>
+<li>dfs.namenode.secondary.http-address  提供secondary namenode的节点和端口</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/image-20210305161205537.png" alt="image-20210305161205537"></p>
+<h4 id="修改slaves"><a href="#修改slaves" class="headerlink" title="修改slaves"></a>修改slaves</h4><p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/image-20210305161434494.png" alt="image-20210305161434494"></p>
+<pre class="line-numbers language-none"><code class="language-none">node01node02node03<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/image-20210305161256592.png" alt="image-20210305161256592"></p>
+<h4 id="修改yarn-site-xml"><a href="#修改yarn-site-xml" class="headerlink" title="修改yarn-site.xml"></a>修改yarn-site.xml</h4><p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/image-20210305161538239.png" alt="image-20210305161538239"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Tfeng233/blog-imgs/image-20210305161521741.png" alt="image-20210305161521741"></p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">&lt;configuration&gt;    &lt;property&gt;        &lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;        &lt;value&gt;node01&lt;/value&gt;    &lt;/property&gt;    &lt;property&gt;        &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;        &lt;value&gt;mapreduce_shuffle&lt;/value&gt;    &lt;/property&gt;&lt;/configuration&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h4 id="分发hadoop到各节点"><a href="#分发hadoop到各节点" class="headerlink" title="分发hadoop到各节点"></a>分发hadoop到各节点</h4><pre class="line-numbers language-none"><code class="language-none">[root@node01 hadoop]# scp -r /usr/local/hadoop-2.7.7 root@node02:/usr/local[root@node01 hadoop]# scp -r /usr/local/hadoop-2.7.7 root@node03:/usr/local<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h4 id="格式化和启动"><a href="#格式化和启动" class="headerlink" title="格式化和启动"></a>格式化和启动</h4><ol>
+<li><p>在Node01节点格式化操作</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">[root@node01 ~]# hdfs namenode -format<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>启动(只需要在主节点上启动，其他的不需要启动)</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">[root@node01 ~]# start-dfs.sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>验证</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">[root@node01 ~]# jps7825 NameNode7865 DataNode8060 Jps[root@node02 local]# jps8737 Jps8603 DataNode8671 SecondaryNameNode[root@node03 ~]# jps8439 Jps8364 DataNode<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>登陆web地址（<a target="_blank" rel="noopener" href="http://192.168.52.101:50070/%EF%BC%89%E6%A3%80%E6%B5%8B">http://192.168.52.101:50070/）检测</a></p>
+</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Hadoop的全分布式搭建的过程：</p>
+<ul>
+<li><p>准备3台虚拟机</p>
+</li>
+<li><p>保证虚拟机网络、IP、主机名、防火墙</p>
+</li>
+<li><p>安装JDK </p>
+</li>
+<li><p>做etc  hosts文件设置</p>
+</li>
+<li><p>免秘钥登陆</p>
+</li>
+<li><p>安装Hadoop</p>
+</li>
+<li><p>上传包 解压</p>
+</li>
+<li><p>配置环境变量</p>
+</li>
+<li><p>让环境变量生效  验证</p>
+</li>
+<li><p>hadoop-env.xml   配置JAVA_HOME</p>
+</li>
+<li><p>core-site.xml  namenode</p>
+</li>
+<li><p>hdfs-site.xml</p>
+</li>
+<li><p>slaves  从节点</p>
+</li>
+<li><p>yarn-site.xml</p>
+</li>
+<li><p>分发Hadoop</p>
+</li>
+<li><p>格式化 hadoop  namenode  -format</p>
+</li>
+<li><p>启动  start-dfs.sh   stop-dfs.sh</p>
+</li>
+<li><p>检查 JPS</p>
+</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/Tfeng233/about" rel="external nofollow noreferrer">echizen</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://github.com/Tfeng233/Tfeng233/2021/08/31/hadoop-wan-quan-fen-bu-shi-da-jian/">https://github.com/Tfeng233/Tfeng233/2021/08/31/hadoop-wan-quan-fen-bu-shi-da-jian/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/Tfeng233/about" target="_blank">echizen</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/Tfeng233/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/">
+                                    <span class="chip bg-color">大数据</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/Tfeng233/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/Tfeng233/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/Tfeng233/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/Tfeng233/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/Tfeng233/2021/08/31/hive-an-zhuang/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/Tfeng233/medias/featureimages/4.jpg" class="responsive-img" alt="Hive安装">
+                        
+                        <span class="card-title">Hive安装</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-08-31
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            echizen
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/Tfeng233/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/">
+                        <span class="chip bg-color">大数据</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                本篇&nbsp;<i class="far fa-dot-circle"></i>
+            </div>
+            <div class="card">
+                <a href="/Tfeng233/2021/08/31/hadoop-wan-quan-fen-bu-shi-da-jian/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/Tfeng233/medias/featureimages/14.jpg" class="responsive-img" alt="Hadoop完全分布式搭建">
+                        
+                        <span class="card-title">Hadoop完全分布式搭建</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-31
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            echizen
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/Tfeng233/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/">
+                        <span class="chip bg-color">大数据</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/Tfeng233/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/Tfeng233/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/Tfeng233/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/Tfeng233/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/Tfeng233/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/Tfeng233/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/Tfeng233/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2021</span>
+            
+            <span id="year">2019</span>
+            <a href="/Tfeng233/about" target="_blank">echizen</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/Tfeng233" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:afeng4869@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=905443719" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 905443719" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/Tfeng233/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/Tfeng233/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/Tfeng233/libs/materialize/materialize.min.js"></script>
+    <script src="/Tfeng233/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/Tfeng233/libs/aos/aos.js"></script>
+    <script src="/Tfeng233/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/Tfeng233/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/Tfeng233/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/Tfeng233/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/Tfeng233/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/Tfeng233/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
