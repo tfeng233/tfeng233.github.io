@@ -427,28 +427,33 @@ yum install yum-utils -y<span aria-hidden="true" class="line-numbers-rows"><span
 <!--已安装就无视-->
 
 <h3 id="1-centos7自带有mariadb，需要卸载"><a href="#1-centos7自带有mariadb，需要卸载" class="headerlink" title="1.centos7自带有mariadb，需要卸载"></a>1.centos7自带有mariadb，需要卸载</h3><p>执行<code>rpm -qa|grep mariadb</code>查询是否有mariadb的安装包</p>
-<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC1%E9%A1%B5-2.PNG"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tfeng233/blog-imgs/%E7%AC%AC1%E9%A1%B5-2.jpg"></p>
 <p>如有提示，执行<code>rpm -e --nodeps mariadb-libs</code>删除它，没提示可以无视</p>
 <h3 id="2-下载MySQL安装包"><a href="#2-下载MySQL安装包" class="headerlink" title="2.下载MySQL安装包"></a>2.下载MySQL安装包</h3><p>1.前往官方网站复制yum源链接<a target="_blank" rel="noopener" href="https://dev.mysql.com/downloads/repo/yum/">MySQL</a></p>
-<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC1%E9%A1%B5-1.PNG"></p>
-<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC2%E9%A1%B5-5.PNG"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tfeng233/blog-imgs/%E7%AC%AC1%E9%A1%B5-1.jpg"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tfeng233/blog-imgs/%E7%AC%AC2%E9%A1%B5-5.jpg"></p>
 <p>2.执行<code>wget rpm -ivh mysql80-community-release-el7-3.noarch.rpm</code>（即你复制的下载链接）进行下载</p>
-<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC2%E9%A1%B5-4.PNG"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tfeng233/blog-imgs/%E7%AC%AC2%E9%A1%B5-4.jpg"></p>
 <h3 id="2-进行yum安装"><a href="#2-进行yum安装" class="headerlink" title="2.进行yum安装"></a>2.进行yum安装</h3><p>执行<code>rpm -ivh mysql80-community-release-el7-3.noarch.rpm</code>命令</p>
-<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC2%E9%A1%B5-3.PNG"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tfeng233/blog-imgs/%E7%AC%AC2%E9%A1%B5-3.jpg"></p>
 <p>接下来可以通过<code>yum repolist all | grep mysql</code>查看yum源中的mysql安装包</p>
-<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC3%E9%A1%B5-9.PNG"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tfeng233/blog-imgs/%E7%AC%AC3%E9%A1%B5-9.jpg"></p>
 <h3 id="3-进行MySQL安装"><a href="#3-进行MySQL安装" class="headerlink" title="3.进行MySQL安装"></a>3.进行MySQL安装</h3><p>可以看到yum源中默认启用的安装包版本为MySQL8.0，如果需要切换为5.7，需要运行以下命令：</p>
 <p><code>yum-config-manager --disable mysql80-community</code></p>
-<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC3%E9%A1%B5-8.PNG"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tfeng233/blog-imgs/%E7%AC%AC3%E9%A1%B5-8.jpg"></p>
 <p><code>yum-config-manager --enable mysql57-community</code></p>
-<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC3%E9%A1%B5-7.PNG"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tfeng233/blog-imgs/%E7%AC%AC3%E9%A1%B5-7.jpg"></p>
 <p>进行安装：</p>
-<p><code>yum install mysql-community-server-y</code></p>
-<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC3%E9%A1%B5-6.PNG"></p>
+<p><code>yum install mysql-community-server -y</code></p>
+<p>注意：可能会很慢可以自行到<a target="_blank" rel="noopener" href="http://uni.mirrors.163.com/mysql/Downloads/MySQL-5.7/%E4%B8%8B%E8%BD%BD%E7%9B%B8%E5%AF%B9%E5%BA%94%E7%9A%84%E7%89%88%E6%9C%AC">http://uni.mirrors.163.com/mysql/Downloads/MySQL-5.7/下载相对应的版本</a></p>
+<p>目录：</p>
+<pre class="line-numbers language-none"><code class="language-none">/var/cache/yum/x86_64/7/mysql57-community/packages<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/tfeng233/blog-imgs/image-20210916141120008.jpg"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tfeng233/blog-imgs/%E7%AC%AC3%E9%A1%B5-6.jpg"></p>
 <h3 id="4-启动MySQL服务"><a href="#4-启动MySQL服务" class="headerlink" title="4.启动MySQL服务"></a>4.启动MySQL服务</h3><p>启动mysql服务 <code>systemctl start mysqld.service</code></p>
 <p>查看mysql服务运行状态 <code>systemctl status mysqld.service</code></p>
-<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC4%E9%A1%B5-12.PNG"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tfeng233/blog-imgs/%E7%AC%AC4%E9%A1%B5-12.jpg"></p>
 <p>MySQL服务器初始化（从MySQL 5.7开始）：在服务器初始启动时，如果服务器的数据目录为空，则会发生以下情况：</p>
 <ul>
 <li>服务器已初始化。</li>
@@ -457,11 +462,11 @@ yum install yum-utils -y<span aria-hidden="true" class="line-numbers-rows"><span
 <li>默认将<code>'root'@'localhost'</code> 创建一个超级用户帐户。设置超级用户的密码并将其存储在错误日志文件中。要显示它，请使用以下命令：</li>
 </ul>
 <p>查看MySQL root用户默认密码<code>grep 'temporary password' /var/log/mysqld.log</code></p>
-<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC4%E9%A1%B5-11.PNG"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tfeng233/blog-imgs/%E7%AC%AC4%E9%A1%B5-11.jpg"></p>
 <p>通过使用生成的临时密码登录并为超级用户帐户设置自定义密码，尽快更改root密码：</p>
 <p><code>mysql -u root -p</code></p>
 <p>Enter pasword：查询的默认密码（输入密码不会有提示）</p>
-<p><img src="http://qypk54f5a.hn-bkt.clouddn.com/%E7%AC%AC4%E9%A1%B5-10.PNG"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tfeng233/blog-imgs/%E7%AC%AC4%E9%A1%B5-10.jpg"></p>
 <p>注意<br>MySQL的 <a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/validate-password.html">validate_password</a> 插件默认安装。</p>
 <p>这将要求密码包含至少一个大写字母，一个小写字母，一个数字和一个特殊字符，并且密码总长度至少为8个字符。</p>
 <p>如果您需要修改简单密码，可以依次执行以下操作步骤:</p>
