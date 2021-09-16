@@ -471,6 +471,17 @@ yum install yum-utils -y<span aria-hidden="true" class="line-numbers-rows"><span
 <span class="token comment">-- 然后进行密码更改</span>
 <span class="token keyword">ALTER</span> <span class="token keyword">USER</span> <span class="token string">'root'</span><span class="token variable">@'localhost'</span> IDENTIFIED <span class="token keyword">BY</span> <span class="token string">'你的密码'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
+<p>外部访问MySQL</p>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">use mysql;
+
+--查询正常结果来说，应该都是localhost
+select  User,authentication_string,Host from user;
+
+--这里可以根据你的情况或者是自己的喜好进行酌情修改
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '密码';
+
+--清除缓存，重新加载权限
+flush privileges;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
                 
@@ -713,7 +724,7 @@ yum install yum-utils -y<span aria-hidden="true" class="line-numbers-rows"><span
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/09/01/hadoop-ji-qun-ambari/">
+                <a href="/2021/09/16/hadoop-ji-qun-ambari/">
                     <div class="card-image">
                         
                         
@@ -730,27 +741,15 @@ yum install yum-utils -y<span aria-hidden="true" class="line-numbers-rows"><span
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-09-01
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-09-16
                         </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/" class="post-category">
-                                    大数据
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            echizen
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Hadoop/">
-                        <span class="chip bg-color">Hadoop</span>
-                    </a>
-                    
                 </div>
                 
             </div>
