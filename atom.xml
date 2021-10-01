@@ -6,7 +6,7 @@
   <link href="https://tfeng233.github.io/atom.xml" rel="self"/>
   
   <link href="https://tfeng233.github.io/"/>
-  <updated>2021-09-27T15:02:47.017Z</updated>
+  <updated>2021-10-01T09:09:39.812Z</updated>
   <id>https://tfeng233.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Spring</title>
+    <link href="https://tfeng233.github.io/2021/10/01/spring/"/>
+    <id>https://tfeng233.github.io/2021/10/01/spring/</id>
+    <published>2021-10-01T09:01:12.000Z</published>
+    <updated>2021-10-01T09:09:39.812Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;Spring&quot;&gt;&lt;a href=&quot;#Spring&quot; class=&quot;headerlink&quot; title=&quot;Spring&quot;&gt;&lt;/a&gt;Spring&lt;/h1&gt;&lt;h3 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Java" scheme="https://tfeng233.github.io/categories/Java/"/>
+    
+    
+    <category term="Spring" scheme="https://tfeng233.github.io/tags/Spring/"/>
+    
+  </entry>
   
   <entry>
     <title>注解和反射</title>
